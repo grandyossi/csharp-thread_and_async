@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using static System.Diagnostics.Debug;
 using System.Threading;
 
@@ -12,7 +12,7 @@ namespace GYThreading.Testers
         /// <summary>
         /// 
         /// </summary>
-        public event Action Done = delegate { };
+        public event Action TestCompleted = delegate { };
 
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace GYThreading.Testers
             }
             foreach (Thread th in t)
                 th.Join();
-            Done.Invoke();
+            OnTestCompleted();
         }
 
 
@@ -67,6 +67,19 @@ namespace GYThreading.Testers
             //
             //
             Write($"{DateTime.Now} - {n} - Released!\n");
+        }
+
+
+        /// <summary>
+        /// It is a sealed class, so it is `private` not `protected[ virtual]`.
+        /// Written to maintain desired event raising practice
+        /// </summary>
+        private void OnTestCompleted()
+        {
+            Action e = TestCompleted;//local copy
+            //just practice (not null in this class!)
+            if (e != null)
+                e.Invoke();
         }
     }
 }
