@@ -23,7 +23,8 @@ namespace GYThreading
         /// <summary>
         /// Once signaled (true) it allows all waiting threads to pass
         /// </summary>
-        private ManualResetEvent _releaser { get; } = new ManualResetEvent(false);
+        private ManualResetEvent _releaser { get; } =
+                                 new ManualResetEvent(false);
 
 
         /// <summary>
@@ -36,7 +37,8 @@ namespace GYThreading
         public GYReverseSemaphore(int threshold)
         {
             if (0 >= threshold)
-                throw new ArgumentException("Threshold must be bigger than zero");
+                throw new ArgumentException(
+                          "Threshold must be bigger than zero");
             Threshold = threshold;
         }
         /// <summary>
@@ -48,7 +50,10 @@ namespace GYThreading
         }
 
 
-
+        /// <summary>
+        /// The actual sync is made via invoking this method
+        /// </summary>
+        /// <see cref="Testers.GYReverseSemaphoreTester._threadProc(int, GYReverseSemaphore)"/>
         public void WaitAll()
         {
             Interlocked.Increment(ref _countThreads);
